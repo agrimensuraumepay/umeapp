@@ -86,6 +86,7 @@ const CAPAS = [
 ];
 
 const map = L.map('map').setView(CENTRO, 16);
+map.createPane('parcelasPane'); map.getPane('parcelasPane').style.zIndex=350;
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
   maxZoom:19, attribution:'&copy; OpenStreetMap'
 }).addTo(map);
@@ -121,7 +122,7 @@ function colorAgua(v){
 }
 
 // ---- Popup: muestra los campos, ocultando internos y coordenadas planas ----
-const ETIQUETAS={Barrio:'Barrio',NumParc:'Parcela N°',EstadoCat:'Estado catastral',TipoTitula:'Titularidad',Titular_es:'Titular',Umepay:'Umepay','Sup(m2)':'Superficie',codigo:'Código',Codigo:'Código',Descripcio:'Tipo',Manguera:'Manguera',h:'Altura',capacidad_l:'Capacidad',Capacidad_L:'Capacidad'};
+const ETIQUETAS={Barrio:'Barrio',NumParc:'Parcela N°',EstadoCat:'Estado catastral',TipoTitula:'Titularidad',Titular_es:'Titular',Umepay:'Umepay','Sup(m2)':'Superficie',codigo:'Código',Codigo:'Código',Descripcio:'Tipo',Manguera:'Manguera',h:'Altura',capacidad_l:'Capacidad',Capacidad_L:'Capacidad',NOMBRE_COM:'Nombre',TIPO:'Tipo',ORDEN:'Orden',DEPARTAMEN:'Departamento',CUENCA:'Cuenca','Estado_de_':'Estado',red:'Red',rst:'Calzada',gna:'Tipo de vía'};
 const VALORES={SinRegistrar:'Sin registrar',Registrado:'Registrado',TitularUnico:'Titular único',Si:'Sí',No:'No',TanqAcopio:'Tanque acopio',TanqCasa:'Tanque casa',Tanqdistrib:'Tanque distribución',T:'Bifurcación'};
 const OCULTAR=['lote','NumParc','FID','Norte','Este','norte','este','NORTE','ESTE','X','Y','x','y','Latitud','Longitud','Lat','Lon','lat','lon'];
 function pretty(k){return ETIQUETAS[k] || (k.charAt(0).toUpperCase()+k.slice(1).replace(/_/g,' '));}
@@ -131,23 +132,33 @@ function valor(k,v){
     return (parseFloat(v)/10000).toLocaleString('es-AR',{maximumFractionDigits:2})+' ha';
   return VALORES[v] || v;
 }
-function popup(props){
+const CAMPOS={
+  curso:['TIPO','ORDEN','DEPARTAMEN','CUENCA','Estado_de_'],
+  vialProv:['red','gna','rst']
+};
+function popup(props, clase){
   props=props||{};
-  const num = props.NumParc!=null ? props.NumParc : props.lote;
-  const titulo = num!=null ? 'Parcela '+num : (valCat(props) || props.nombre || 'Detalle');
-  const filas = Object.entries(props)
-    .filter(([k,v])=> !vacio(v) && !OCULTAR.includes(k))
-    .map(([k,v])=>`<div class="row"><span class="k">${pretty(k)}:</span> ${valor(k,v)}</div>`)
-    .join('');
+  let titulo;
+  if(clase==='curso') titulo = props.NOMBRE_COM || 'Curso de agua';
+  else if(clase==='vialProv') titulo = 'Ruta provincial';
+  else { const num = props.NumParc!=null?props.NumParc:props.lote;
+    titulo = num!=null ? 'Parcela '+num : (valCat(props)||props.nombre||'Detalle'); }
+
+  let pares;
+  if(CAMPOS[clase]) pares = CAMPOS[clase].map(k=>[k,props[k]]).filter(([k,v])=>!vacio(v));
+  else pares = Object.entries(props).filter(([k,v])=> !vacio(v) && !OCULTAR.includes(k));
+
+  const filas = pares.map(([k,v])=>`<div class="row"><span class="k">${pretty(k)}:</span> ${valor(k,v)}</div>`).join('');
   const corr = FORM_URL ? `<a class="corr" href="${FORM_URL}" target="_blank">Sugerir una corrección</a>` : '';
   return `<div class="popup"><b>${titulo}</b>${filas}${corr}</div>`;
 }
 
 // ---- Construccion de capas por clase ----
 function agregarCapa(geojson, clase, nombre, overlays, visible){
-  const opts = {onEachFeature:(f,l)=>l.bindPopup(popup(f.properties))};
+  const opts = {onEachFeature:(f,l)=>l.bindPopup(popup(f.properties, clase))};
   if(clase==='parcela'){
     opts.style = estiloParcela;
+    opts.pane = 'parcelasPane';
   } else if(clase==='aguaPunto'){
     opts.pointToLayer=(f,ll)=>{
       const c=String(valCat(f.properties)).trim().toLowerCase();
