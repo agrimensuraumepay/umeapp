@@ -12,41 +12,17 @@
 body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;max-width:480px;margin:0 auto;min-height:100vh}
 .screen{display:none;flex-direction:column;min-height:100vh}
 .screen.active{display:flex}
-.topbar{background:#2d5a3d;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
-.topbar h1{color:#e8f5e2;font-size:17px;font-weight:500;flex:1}
 .logobar{background:#2d5a3d;padding:24px 16px 18px;display:flex;justify-content:space-between;align-items:center}
 .logobar h1{color:#e8f5e2;font-size:24px;font-weight:500;letter-spacing:1px}
-.content{flex:1;padding:14px;padding-bottom:70px}
-.card{background:#fff;border:0.5px solid #e0e0d8;border-radius:12px;padding:14px 16px;margin-bottom:10px}
-.row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:0.5px solid #f0f0e8}
-.row:last-child{border-bottom:none}
-.btn-back{color:#9ecfb0;font-size:22px;cursor:pointer;background:none;border:none;padding:0}
-.nav{display:flex;background:#fff;border-top:0.5px solid #e0e0d8;position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;z-index:10}
-.nt{flex:1;padding:9px 0;text-align:center;font-size:10px;color:#888;cursor:pointer;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:2px}
-.nt i{font-size:20px}
-.nt.active{color:#2d5a3d}
+.content{flex:1;padding:14px}
 .slabel{font-size:11px;color:#aaa;font-weight:500;text-transform:uppercase;letter-spacing:.5px;margin:14px 0 7px}
-.sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:12px}
-.scard{background:#f0f0e8;border-radius:8px;padding:12px}
-.slbl{font-size:11px;color:#888}
-.sval{font-size:20px;font-weight:500;margin-top:2px}
-.bcard{background:#fff;border:0.5px solid #e0e0d8;border-radius:12px;padding:13px 15px;margin-bottom:9px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
-.bname{font-size:15px;font-weight:500}
-.bmeta{font-size:12px;color:#888;margin-top:2px}
-.badge{font-size:11px;padding:3px 9px;border-radius:6px}
-.bok{background:#eaf3de;color:#3b6d11}
-.bpend{background:#faeeda;color:#854f0b}
-.lname{font-size:14px}
-.lown{font-size:12px;color:#888}
+.bcard{background:#fff;border:0.5px solid #e0e0d8;border-radius:12px;padding:15px 16px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.bcard .tt{font-size:15px;font-weight:500}
+.bcard .ss{font-size:12px;color:#888;margin-top:2px}
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;background:#faeeda;color:#854f0b}
 .btn-p{background:#2d5a3d;color:#e8f5e2;border:none;border-radius:8px;padding:12px 18px;font-size:14px;font-weight:500;width:100%;cursor:pointer;margin-bottom:9px}
 .btn-s{background:#fff;color:#2d5a3d;border:1.5px solid #2d5a3d;border-radius:8px;padding:12px 18px;font-size:14px;font-weight:500;width:100%;cursor:pointer}
 .inp{width:100%;padding:10px 13px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:11px;background:#fff}
-.prog-bar{background:#e8e8e0;border-radius:20px;height:10px;margin:8px 0 4px;overflow:hidden}
-.prog-fill{height:100%;border-radius:20px;background:#2d5a3d}
-.pcard{background:#fff;border:0.5px solid #e0e0d8;border-radius:12px;padding:14px 16px;margin-bottom:10px}
-.ptag{font-size:11px;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:6px;margin-right:4px}
-.tag-activo{background:#eaf3de;color:#3b6d11}
-.tag-colecta{background:#e6f1fb;color:#185fa5}
 #install-btn{display:none;position:fixed;top:12px;right:12px;background:#2d5a3d;color:#e8f5e2;border:none;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;z-index:100}
 </style>
 </head>
@@ -71,261 +47,49 @@ body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;max-width
     <button onclick="go('s-login')" style="background:none;border:none;color:#9ecfb0;font-size:12px;cursor:pointer">Salir</button>
   </div>
   <div class="content">
-    <div class="sgrid">
-      <div class="scard"><div class="slbl">Barrios</div><div class="sval">7</div></div>
-      <div class="scard"><div class="slbl">Lotes totales</div><div class="sval">136</div></div>
-      <div class="scard"><div class="slbl">Registrados</div><div class="sval">~30</div></div>
-      <div class="scard"><div class="slbl">Proyectos</div><div class="sval">2</div></div>
-    </div>
-    <div class="slabel">Módulos</div>
-    <div class="bcard" onclick="go('s-barrios')">
-      <div style="display:flex;align-items:center;gap:12px">
-        <i class="ti ti-map-2" style="font-size:22px;color:#2d5a3d"></i>
-        <div><div style="font-size:14px;font-weight:500">Barrios y lotes</div><div style="font-size:12px;color:#888">Aldea, Castaños, Nogales...</div></div>
-      </div>
-      <i class="ti ti-chevron-right" style="color:#ccc"></i>
-    </div>
-    <div class="bcard" onclick="go('s-expensas')">
-      <div style="display:flex;align-items:center;gap:12px">
-        <i class="ti ti-receipt" style="font-size:22px;color:#2d5a3d"></i>
-        <div><div style="font-size:14px;font-weight:500">Expensas</div><div style="font-size:12px;color:#888">Estado mensual por barrio</div></div>
-      </div>
-      <i class="ti ti-chevron-right" style="color:#ccc"></i>
-    </div>
-    <div class="bcard" onclick="go('s-gas')">
-      <div style="display:flex;align-items:center;gap:12px">
-        <i class="ti ti-flame" style="font-size:22px;color:#2d5a3d"></i>
-        <div><div style="font-size:14px;font-weight:500">UmeGas</div><div style="font-size:12px;color:#888">Pedido de garrafas</div></div>
-      </div>
-      <i class="ti ti-chevron-right" style="color:#ccc"></i>
-    </div>
-    <div class="bcard" onclick="go('s-proyectos')">
-      <div style="display:flex;align-items:center;gap:12px">
-        <i class="ti ti-users-group" style="font-size:22px;color:#2d5a3d"></i>
-        <div><div style="font-size:14px;font-weight:500">Proyectos comunitarios</div><div style="font-size:12px;color:#888">Exóticas · Gimnasio</div></div>
-      </div>
-      <i class="ti ti-chevron-right" style="color:#ccc"></i>
-    </div>
+    <div class="slabel" style="margin-top:0">Secciones</div>
+
     <div class="bcard" onclick="location.href='mapa.html'">
       <div style="display:flex;align-items:center;gap:12px">
         <i class="ti ti-map-pin" style="font-size:22px;color:#2d5a3d"></i>
-        <div><div style="font-size:14px;font-weight:500">Mapa</div><div style="font-size:12px;color:#888">Parcelas y red de agua</div></div>
+        <div><div class="tt">Mapa</div><div class="ss">Parcelas y red de agua</div></div>
       </div>
       <i class="ti ti-chevron-right" style="color:#ccc"></i>
     </div>
-  </div>
-  <nav class="nav">
-    <button class="nt active" onclick="nav('s-home',this)"><i class="ti ti-home"></i>Inicio</button>
-    <button class="nt" onclick="nav('s-barrios',this)"><i class="ti ti-map-2"></i>Barrios</button>
-    <button class="nt" onclick="nav('s-expensas',this)"><i class="ti ti-receipt"></i>Expensas</button>
-    <button class="nt" onclick="nav('s-proyectos',this)"><i class="ti ti-users-group"></i>Proyectos</button>
-  </nav>
-</div>
 
-<div id="s-barrios" class="screen">
-  <div class="topbar"><button class="btn-back" onclick="go('s-home')"><i class="ti ti-arrow-left"></i></button><h1>Barrios y lotes</h1></div>
-  <div class="content" id="lista-barrios"></div>
-  <nav class="nav">
-    <button class="nt" onclick="nav('s-home',this)"><i class="ti ti-home"></i>Inicio</button>
-    <button class="nt active" onclick="nav('s-barrios',this)"><i class="ti ti-map-2"></i>Barrios</button>
-    <button class="nt" onclick="nav('s-expensas',this)"><i class="ti ti-receipt"></i>Expensas</button>
-    <button class="nt" onclick="nav('s-proyectos',this)"><i class="ti ti-users-group"></i>Proyectos</button>
-  </nav>
-</div>
-
-<div id="s-lotes" class="screen">
-  <div class="topbar"><button class="btn-back" onclick="go('s-barrios')"><i class="ti ti-arrow-left"></i></button><h1 id="lotes-title">Lotes</h1></div>
-  <div class="content" id="lista-lotes"></div>
-  <nav class="nav">
-    <button class="nt" onclick="nav('s-home',this)"><i class="ti ti-home"></i>Inicio</button>
-    <button class="nt active" onclick="nav('s-barrios',this)"><i class="ti ti-map-2"></i>Barrios</button>
-    <button class="nt" onclick="nav('s-expensas',this)"><i class="ti ti-receipt"></i>Expensas</button>
-    <button class="nt" onclick="nav('s-proyectos',this)"><i class="ti ti-users-group"></i>Proyectos</button>
-  </nav>
-</div>
-
-<div id="s-expensas" class="screen">
-  <div class="topbar"><button class="btn-back" onclick="go('s-home')"><i class="ti ti-arrow-left"></i></button><h1>Expensas</h1></div>
-  <div class="content">
-    <div class="slabel" style="margin-top:0">Por barrio</div>
-    <div class="card" id="exp-lista"></div>
-    <p style="font-size:12px;color:#aaa;margin-top:8px">Los estados se cargarán desde Google Sheets cuando agregues la hoja "Expensas".</p>
-  </div>
-  <nav class="nav">
-    <button class="nt" onclick="nav('s-home',this)"><i class="ti ti-home"></i>Inicio</button>
-    <button class="nt" onclick="nav('s-barrios',this)"><i class="ti ti-map-2"></i>Barrios</button>
-    <button class="nt active" onclick="nav('s-expensas',this)"><i class="ti ti-receipt"></i>Expensas</button>
-    <button class="nt" onclick="nav('s-proyectos',this)"><i class="ti ti-users-group"></i>Proyectos</button>
-  </nav>
-</div>
-
-<div id="s-gas" class="screen">
-  <div class="topbar"><button class="btn-back" onclick="go('s-home')"><i class="ti ti-arrow-left"></i></button><h1>UmeGas</h1></div>
-  <div class="content">
-    <div class="slabel" style="margin-top:0">Precios actuales · al 29/5/26</div>
-    <div class="card" style="margin-bottom:14px">
-      <div class="row"><div class="lname">45 K (tubo alto)</div><div style="font-weight:500">$113.000</div></div>
-      <div class="row"><div class="lname">30 K</div><div style="font-weight:500">$78.000</div></div>
-      <div class="row"><div class="lname">15 K (garrafa alta)</div><div style="font-weight:500">$50.000</div></div>
-      <div class="row"><div class="lname">10 K (garrafa baja)</div><div style="font-weight:500">$37.000</div></div>
-      <div style="font-size:11px;color:#aaa;margin-top:8px">+ $300 por transferencia · Alias: gas.centro.mejor (Norma Torres)</div>
-    </div>
-    <div class="slabel">Tu pedido</div>
-    <div class="card">
-      <div style="font-size:13px;color:#888;margin-bottom:8px">Nombre / lote</div>
-      <select class="inp" id="gas-lote" style="margin-bottom:12px">
-        <option value="">Elegí tu lote...</option>
-        <option>1. Mauro y Lucy</option><option>2. Eugenia y Sergio</option><option>3. Barro Tal Vez (Batá)</option><option>4. Acros (Coni+Rodri+Bambú)</option><option>5. Casa Kurry</option><option>6. Cris Porto</option><option>7. Danila Tōshin y Noe</option><option>8. Amrit</option><option>9. Ceci Estenssoro</option><option>10. Ana Estenssoro</option><option>11. Santi Calvo</option><option>12. Jorge Estenssoro</option><option>13. Julieta y Robert</option><option>14. Maru y Eze (Domo)</option><option>15. Luciana (Ex Nacho)</option><option>16. Roberto Gallelli</option><option>17. Ademir</option><option>18. María Elena</option><option>19. Stephy y Mauro</option><option>20. Nati Tevelez</option><option>21. Mica Jere y Quimey</option><option>22. Casa Colibrí</option><option>23. Lau Petrolo (TheoLab)</option><option>24. Mati Echeguren</option><option>25. Caro y Ger (DeJa)</option><option>26. Ana Altavista</option><option>27. Bavali</option><option>28. Obrador 100T</option><option>29. Fran Fabre</option><option>30. Caro Martin y Aaron</option><option>31. Tonga</option><option>32. Daphne (Emilse)</option><option>33. Ceci Gus Haruki Akemi</option><option>34. Vivi</option><option>35. Nico Villa</option><option>36. Pau (Titi Pañalera)</option><option>37. Tristán</option><option>38. Mario Paixao</option><option>39. Maga de Masi</option><option>40. Carla Lucas Raiza</option><option>41. Gina y Noe</option><option>42. Vale Bai</option><option>43. Casa 4F</option><option>44. Fran Herni y Feli (Renoleta)</option><option>45. Marcelo y Mariana (ikonicoff)</option><option>46. Eli Lucho Luz y Tomoteo</option><option>47. Ro Ari Andina Marino</option><option>48. Graciela Varela (Gaby)</option><option>49. Rodri Rasta</option><option>50. Casa Aurora</option><option>51. Marina Britos (Ford Roja)</option><option>52. Agos Espeche (Debora)</option><option>53. Daniela Dewey</option><option>54. Juan Dixon</option><option>55. Eze Molina</option><option>56. Magda Chattah</option><option>57. Julieta Nacho Silvestre</option><option>58. Guille Morano</option><option>59. Martin Corral</option><option>60. Cami Joaco Selva</option><option>61. Clari Canale</option><option>62. Lau Dillon (Aixa)</option><option>63. Ger Vidal Haan</option><option>64. Nina+Tomy (Coni Soria)</option><option>65. Anabella Osky y Aloe</option><option>66. Sen de Campo (Despensa)</option><option>67. Cintya y Orión</option><option>68. Luna (Fondo izquierda)</option><option>69. Seba Panero (Fondo derecha)</option><option>70. Maru Mati y León</option><option>71. Carlitos</option><option>72. Belén</option><option>73. Adri</option><option>74. Ulises</option><option>75. Ornella (La Vieja Osada)</option><option>76. Erci</option><option>77. Natacha</option><option>78. Siembra Dicha</option><option>79. Oficina 100T</option><option>80. Ceci Sonzini</option><option>81. Mara</option><option>82. Leo Miraglia</option><option>83. Carolina (3R)</option><option>84. Lindsay y Mati (Dutto)</option><option>85. Milly Hirschon (3R)</option><option>86. Cabaña Pileta (La Vic)</option><option>87. Cabaña Medio (La Vic)</option><option>88. Cabaña Fondo (La Vic)</option><option>92. Coles</option><option>93. Magui Riachi</option><option>94. Rochi Juampi Awara</option><option>95. Laura Kalauz (3R)</option><option>96. Clara Terán (3R)</option><option>97. Fran Barlett</option><option>98. Ikonikoff Acacias</option><option>99. La Audelina (Casa Principal fondo)</option><option>100. Nati Damo Nina Simón</option><option>101. Tiny House (Ikonikoff Acacias)</option><option>102. Escuela Umepay</option><option>103. Lu y Fede (Entrando a Kurry)</option><option>104. Johy (entre Bavali y Tristan)</option><option>105. Magda Zucchi</option><option>106. Chacra Alimento</option><option>107. Vicente Nadal</option><option>108. Gise (Nueva en 3 Ríos)</option><option>109. Rosa María (Lucio)</option><option>110. Oficina Pueblo Vivo</option><option>111. Martín Corral (Flor/Pela)</option><option>112. Mercedes Taranto</option><option>113. Robert (Casa Amor)</option><option>114. Mariano Quiroga</option><option>115. Mario Chacón (Lote Hugo)</option>
-      </select>
-      <div style="font-size:13px;color:#888;margin-bottom:8px">Cantidad por tipo</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-        <div><div style="font-size:12px;color:#888">45 K</div><input class="inp" type="number" id="g45" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
-        <div><div style="font-size:12px;color:#888">30 K</div><input class="inp" type="number" id="g30" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
-        <div><div style="font-size:12px;color:#888">15 K</div><input class="inp" type="number" id="g15" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
-        <div><div style="font-size:12px;color:#888">10 K</div><input class="inp" type="number" id="g10" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
+    <div class="bcard" onclick="location.href='cartelera.html'">
+      <div style="display:flex;align-items:center;gap:12px">
+        <i class="ti ti-calendar-event" style="font-size:22px;color:#2d5a3d"></i>
+        <div><div class="tt">Cartelera</div><div class="ss">Eventos, clases, terapias y servicios</div></div>
       </div>
-      <div style="font-size:13px;color:#888;margin-bottom:6px">Forma de pago</div>
-      <div style="display:flex;gap:8px;margin-bottom:12px">
-        <button id="btn-ef" onclick="setPago('efectivo')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #2d5a3d;background:#eaf3de;color:#2d5a3d;font-size:13px;cursor:pointer">Efectivo</button>
-        <button id="btn-tr" onclick="setPago('transferencia')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #ddd;background:#fff;color:#888;font-size:13px;cursor:pointer">Transferencia</button>
-      </div>
-      <div style="font-size:13px;color:#888;margin-bottom:6px">Urgencia</div>
-      <div style="display:flex;gap:8px;margin-bottom:14px">
-        <button id="btn-tranq" onclick="setUrgencia('tranquila')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #2d5a3d;background:#eaf3de;color:#2d5a3d;font-size:13px;cursor:pointer">Tranquila</button>
-        <button id="btn-urg" onclick="setUrgencia('urgente')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #ddd;background:#fff;color:#888;font-size:13px;cursor:pointer">Urgente</button>
-      </div>
-      <div id="total-gas" style="background:#f5f5f0;border-radius:8px;padding:12px;margin-bottom:14px;font-size:15px;font-weight:500;text-align:center">Total: $0</div>
-      <button class="btn-p" onclick="enviarGas()">Enviar pedido por WhatsApp</button>
+      <i class="ti ti-chevron-right" style="color:#ccc"></i>
     </div>
-    <div class="slabel">Emergencias</div>
-    <div class="card">
-      <div style="font-size:13px;color:#888;margin-bottom:10px">Depósito de emergencia: Sen de Campo (Despensa) · +10% sobre precio Lalo</div>
-      <a href="https://wa.me/543546521604" target="_blank" class="btn-s" style="display:block;text-align:center;text-decoration:none;padding:11px">Contactar a Ezequiel (Lalo Gas)</a>
-    </div>
-  </div>
-  <nav class="nav">
-    <button class="nt" onclick="nav('s-home',this)"><i class="ti ti-home"></i>Inicio</button>
-    <button class="nt" onclick="nav('s-barrios',this)"><i class="ti ti-map-2"></i>Barrios</button>
-    <button class="nt active" onclick="nav('s-gas',this)"><i class="ti ti-flame"></i>Gas</button>
-    <button class="nt" onclick="nav('s-proyectos',this)"><i class="ti ti-users-group"></i>Proyectos</button>
-  </nav>
-</div>
 
-<div id="s-proyectos" class="screen">
-  <div class="topbar"><button class="btn-back" onclick="go('s-home')"><i class="ti ti-arrow-left"></i></button><h1>Proyectos comunitarios</h1></div>
-  <div class="content">
-    <div class="pcard">
-      <span class="ptag tag-activo">En curso</span>
-      <div style="font-size:15px;font-weight:500;margin-bottom:4px">Control de especies exóticas</div>
-      <div style="font-size:13px;color:#888;margin-bottom:10px">Relevamiento y extracción de plantas exóticas invasoras. Jornadas colectivas periódicas.</div>
-      <div style="font-size:12px;color:#aaa">Próxima fecha: a confirmar</div>
+    <div class="bcard" onclick="location.href='gas.html'">
+      <div style="display:flex;align-items:center;gap:12px">
+        <i class="ti ti-flame" style="font-size:22px;color:#2d5a3d"></i>
+        <div><div class="tt">UmeGas</div><div class="ss">Pedido de garrafas</div></div>
+      </div>
+      <i class="ti ti-chevron-right" style="color:#ccc"></i>
     </div>
-    <div class="pcard">
-      <span class="ptag tag-activo">En curso</span><span class="ptag tag-colecta">Colecta activa</span>
-      <div style="font-size:15px;font-weight:500;margin-bottom:4px">Gimnasio comunitario</div>
-      <div style="font-size:13px;color:#888;margin-bottom:10px">Construcción del espacio de actividad física compartido.</div>
-      <div style="font-size:12px;color:#555;margin-bottom:2px">Recaudado: <strong>$180.000</strong> de <strong>$500.000</strong></div>
-      <div class="prog-bar"><div class="prog-fill" style="width:36%"></div></div>
-      <div style="font-size:11px;color:#aaa;margin-top:3px">36% alcanzado</div>
+
+    <div class="bcard" onclick="alert('En construcción. Pronto vas a poder consultar el estado de tus expensas con tu cuenta.')">
+      <div style="display:flex;align-items:center;gap:12px">
+        <i class="ti ti-receipt" style="font-size:22px;color:#9aa0a6"></i>
+        <div><div class="tt" style="color:#9aa0a6">Expensas</div><div class="ss">Estado de tus pagos</div></div>
+      </div>
+      <span class="badge">Pronto</span>
     </div>
   </div>
-  <nav class="nav">
-    <button class="nt" onclick="nav('s-home',this)"><i class="ti ti-home"></i>Inicio</button>
-    <button class="nt" onclick="nav('s-barrios',this)"><i class="ti ti-map-2"></i>Barrios</button>
-    <button class="nt" onclick="nav('s-expensas',this)"><i class="ti ti-receipt"></i>Expensas</button>
-    <button class="nt active" onclick="nav('s-proyectos',this)"><i class="ti ti-users-group"></i>Proyectos</button>
-  </nav>
 </div>
 
 <script>
-const DATA={
-  "Aldea":{lotes:40,duenos:{"1":"German Di Filippo / Carolina Jagoe","2":"Damo / Natalia Petrizi","3":"Laura Petrolo","4":"Lucas","5":"Matias Echeguren","6":"Roberto Galleli / Luciana Carbo"}},
-  "Castaños":{lotes:7,duenos:{"1":"Cecilia Sonzini","2":"Mara Ticach","3":"Leo","5":"Herni","6":"Fran Barlett","7":"Ger DiFilippo / Mati Eche"}},
-  "Nogales Bajos":{lotes:16,duenos:{"1":"Juan Manuel Coto","2":"Francisca Silv / Herni","3":"Rosario Bertran","4":"Graciela"}},
-  "Nogales Altos":{lotes:45,duenos:{"1":"Cecilia Hasse / Gustavo Tulic","2":"Rocio Peralta / Juan Pablo Moretto","3":"Julieta Galleli","4":"Valeria Baigorri"}},
-  "Acacias":{lotes:10,duenos:{"1":"Candela Cws","2":"Nacho Licari","3":"Amortina Espeche","4":"Marcelo","5":"Daniela Dewey"}},
-  "Espinillos":{lotes:11,duenos:{"1":"Celi Silveyra","2":"Ana / Oscar","3":"Irina Svaglia / Flor"}},
-  "7 Lomas":{lotes:7,duenos:{"1":"Juan Manuel Coto","2":"German DiFilippo"}}
-};
-
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
-function nav(id,btn){go(id);document.querySelectorAll('.nt').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
 function login(role){document.getElementById('rlabel').textContent=role==='vecino'?'Vecino':'Visitante';go('s-home');}
-
-function renderBarrios(){
-  let h='<div class="slabel" style="margin-top:0">7 barrios</div>';
-  Object.entries(DATA).forEach(([n,d])=>{
-    const reg=Object.keys(d.duenos).length;
-    h+=`<div class="bcard" onclick="verLotes('${n}')"><div><div class="bname">${n}</div><div class="bmeta">${d.lotes} lotes · ${reg} registrados</div></div><i class="ti ti-chevron-right" style="color:#ccc"></i></div>`;
-  });
-  document.getElementById('lista-barrios').innerHTML=h;
-}
-
-function verLotes(barrio){
-  const d=DATA[barrio];
-  document.getElementById('lotes-title').textContent=barrio;
-  let h=`<div class="slabel" style="margin-top:0">${d.lotes} lotes</div><div class="card">`;
-  for(let i=1;i<=d.lotes;i++){
-    const due=d.duenos[String(i)]||'—';
-    h+=`<div class="row"><div><div class="lname">Lote ${i}</div><div class="lown">${due}</div></div></div>`;
-  }
-  h+='</div>';
-  document.getElementById('lista-lotes').innerHTML=h;
-  go('s-lotes');
-}
-
-function renderExpensas(){
-  let h='';
-  Object.entries(DATA).forEach(([n,d])=>{
-    h+=`<div class="row"><div><div class="lname">${n}</div><div class="lown">${d.lotes} lotes</div></div><span class="badge bpend">Sin datos</span></div>`;
-  });
-  document.getElementById('exp-lista').innerHTML=h;
-}
 
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('install-btn').style.display='block';});
 function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;document.getElementById('install-btn').style.display='none';}}
-
-let pagoMode='efectivo', urgMode='tranquila';
-function calcGas(){
-  const p={45:113000,30:78000,15:50000,10:37000};
-  let t=parseInt(document.getElementById('g45').value||0)*p[45]+parseInt(document.getElementById('g30').value||0)*p[30]+parseInt(document.getElementById('g15').value||0)*p[15]+parseInt(document.getElementById('g10').value||0)*p[10];
-  if(pagoMode==='transferencia')t+=300;
-  document.getElementById('total-gas').textContent='Total: $'+t.toLocaleString('es-AR');
-}
-function setPago(m){
-  pagoMode=m;
-  document.getElementById('btn-ef').style.background=m==='efectivo'?'#eaf3de':'#fff';
-  document.getElementById('btn-ef').style.color=m==='efectivo'?'#2d5a3d':'#888';
-  document.getElementById('btn-ef').style.borderColor=m==='efectivo'?'#2d5a3d':'#ddd';
-  document.getElementById('btn-tr').style.background=m==='transferencia'?'#eaf3de':'#fff';
-  document.getElementById('btn-tr').style.color=m==='transferencia'?'#2d5a3d':'#888';
-  document.getElementById('btn-tr').style.borderColor=m==='transferencia'?'#2d5a3d':'#ddd';
-  calcGas();
-}
-function setUrgencia(m){
-  urgMode=m;
-  document.getElementById('btn-tranq').style.background=m==='tranquila'?'#eaf3de':'#fff';
-  document.getElementById('btn-tranq').style.color=m==='tranquila'?'#2d5a3d':'#888';
-  document.getElementById('btn-tranq').style.borderColor=m==='tranquila'?'#2d5a3d':'#ddd';
-  document.getElementById('btn-urg').style.background=m==='urgente'?'#faeeda':'#fff';
-  document.getElementById('btn-urg').style.color=m==='urgente'?'#854f0b':'#888';
-  document.getElementById('btn-urg').style.borderColor=m==='urgente'?'#854f0b':'#ddd';
-}
-function enviarGas(){
-  const lote=document.getElementById('gas-lote').value;
-  if(!lote){alert('Elegí tu lote primero');return;}
-  const c45=document.getElementById('g45').value||0, c30=document.getElementById('g30').value||0, c15=document.getElementById('g15').value||0, c10=document.getElementById('g10').value||0;
-  if(c45==0&&c30==0&&c15==0&&c10==0){alert('Agregá al menos una garrafa');return;}
-  const total=document.getElementById('total-gas').textContent;
-  let msg=`PEDIDO UMEGAS\n\nLote: ${lote}\n`;
-  if(c45>0)msg+=`45K: ${c45}\n`;if(c30>0)msg+=`30K: ${c30}\n`;if(c15>0)msg+=`15K: ${c15}\n`;if(c10>0)msg+=`10K: ${c10}\n`;
-  msg+=`\nPago: ${pagoMode}\n${total}\nUrgencia: ${urgMode}\n\nAlias: gas.centro.mejor`;
-  window.open('https://wa.me/543546521604?text='+encodeURIComponent(msg),'_blank');
-}
-
-renderBarrios();
-renderExpensas();
 </script>
 </body>
 </html>
