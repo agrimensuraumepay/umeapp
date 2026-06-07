@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Umepay · Mapa</title>
+<meta name="theme-color" content="#2d5a3d"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:column;max-width:480px;margin:0 auto;background:#dfe6dc}
+.topbar{background:#2d5a3d;padding:14px 16px;display:flex;align-items:center;gap:10px;z-index:10}
+.topbar h1{color:#e8f5e2;font-size:17px;font-weight:500;flex:1}
+.btn-back{color:#9ecfb0;font-size:22px;cursor:pointer;background:none;border:none;padding:0;text-decoration:none}
+#map{flex:1;background:#cdd9cd}
+.aviso{background:#faeeda;color:#854f0b;font-size:12px;padding:7px 16px;display:none}
+.leyenda{background:#f5f5f0;padding:9px 16px;display:flex;gap:14px;flex-wrap:wrap;font-size:12px;align-items:center;border-top:0.5px solid #e0e0d8}
+.ll{display:inline-flex;align-items:center;gap:6px}
+.sw{width:16px;height:12px;border-radius:2px;display:inline-block}
+.sw.cat{background:#2d5a3d4d;border:1.5px solid #2d5a3d}
+.sw.noc{background:#b9772a40;border:1.5px dashed #b9772a}
+.sw.agua{width:12px;height:12px;border-radius:50%;background:#1d6fb8;border:2px solid #fff;box-shadow:0 0 0 1px #1d6fb8}
+.popup b{font-size:15px;color:#2d5a3d;display:block;margin-bottom:4px}
+.popup .row{font-size:13px;padding:1px 0}
+.popup .k{color:#888}
+.leaflet-popup-content{margin:10px 12px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="btn-back" href="index.html"><i class="ti ti-arrow-left"></i></a>
+  <h1>Mapa</h1>
+</div>
+<div id="aviso" class="aviso"></div>
+<div id="map"></div>
+<div class="leyenda">
+  <span class="ll"><span class="sw cat"></span> Registrada</span>
+  <span class="ll"><span class="sw noc"></span> Sin registrar</span>
+  <span class="ll"><span class="sw agua"></span> Red de agua</span>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const CENTRO = [-31.8543, -64.7210];
+
+// Capas a cargar desde la carpeta data/ del repo.
+// Cuando exportes tus GeoJSON reales, dejalos con estos nombres (o cambialos aca).
+const CAPAS = [
+  {archivo:'data/parcelas.geojson',  nombre:'Parcelas',     clase:'parcela'},
+  {archivo:'data/red_agua.geojson',  nombre:'Red de agua',  clase:'agua'}
+];
+
+const map = L.map('map').setView(CENTRO, 16);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:19, attribution:'&copy; OpenStreetMap'
+}).addTo(map);
+
+// ---- Estilos ----
+function estiloParcela(f){
+  const p=f.properties||{};
+  const noReg = String(p.tipo||p.estado||'').toLowerCase().includes('no');
+  return {color:noReg?'#b9772a':'#2d5a3d', weight:1.5, dashArray:noReg?'5,4':null,
+          fillColor:noReg?'#b9772a':'#2d5a3d', fillOpacity:noReg?0.20:0.30};
+}
+function colorAgua(cod){
+  cod=(cod||'').toLowerCase();
+  if(cod.includes('valv')) return '#e24b4a';
+  if(cod.includes('bomba')) return '#7f77dd';
+  if(cod.includes('gener')) return '#ba7517';
+  if(cod.includes('tanq')) return '#1d6fb8';
+  return '#1d9e75';
+}
+
+// ---- Popup generico: muestra TODOS los campos que tenga el elemento ----
+function pretty(k){return k.charAt(0).toUpperCase()+k.slice(1).replace(/_/g,' ');}
+function popup(props){
+  props=props||{};
+  const titulo = props.lote!=null ? 'Lote '+props.lote
+               : (props.codigo || props.nombre || 'Detalle');
+  const filas = Object.entries(props)
+    .filter(([k,v])=> v!==null && v!=='' && k!=='lote')
+    .map(([k,v])=>`<div class="row"><span class="k">${pretty(k)}:</span> ${v}</div>`)
+    .join('');
+  return `<div class="popup"><b>${titulo}</b>${filas}</div>`;
+}
+
+function agregarCapa(geojson, clase, nombre, overlays){
+  let capa;
+  if(clase==='agua'){
+    capa = L.geoJSON(geojson,{
+      pointToLayer:(f,ll)=>L.circleMarker(ll,{radius:7,color:'#fff',weight:2,
+        fillColor:colorAgua(f.properties&&f.properties.codigo),fillOpacity:1}),
+      style:f=>({color:colorAgua(f.properties&&f.properties.codigo),weight:3}),
+      onEachFeature:(f,l)=>l.bindPopup(popup(f.properties))
+    });
+  } else {
+    capa = L.geoJSON(geojson,{style:estiloParcela,
+      onEachFeature:(f,l)=>l.bindPopup(popup(f.properties))});
+  }
+  capa.addTo(map);
+  overlays[nombre]=capa;
+  return capa;
+}
+
+// ---- Carga: intenta los GeoJSON reales; si no estan, usa muestra ----
+async function init(){
+  const overlays={};
+  let cargadas=0, bounds=null;
+
+  for(const c of CAPAS){
+    try{
+      const r = await fetch(c.archivo,{cache:'no-store'});
+      if(!r.ok) throw new Error('no encontrado');
+      const gj = await r.json();
+      const capa = agregarCapa(gj, c.clase, c.nombre, overlays);
+      cargadas++;
+      const b=capa.getBounds(); if(b.isValid()) bounds = bounds? bounds.extend(b) : b;
+    }catch(e){ /* capa todavia no exportada */ }
+  }
+
+  if(cargadas===0){
+    const av=document.getElementById('aviso');
+    av.textContent='Mostrando datos de muestra. Cuando exportes tus GeoJSON a la carpeta data/, aparecen los reales.';
+    av.style.display='block';
+    agregarCapa(MUESTRA_PARCELAS,'parcela','Parcelas',overlays);
+    const a=agregarCapa(MUESTRA_AGUA,'agua','Red de agua',overlays);
+    bounds = L.geoJSON(MUESTRA_PARCELAS).getBounds();
+  }
+
+  L.control.layers(null,overlays,{collapsed:false}).addTo(map);
+  if(bounds && bounds.isValid()) map.fitBounds(bounds.pad(0.3));
+}
+
+// ---- Datos de muestra (se descartan en cuanto tengas los reales) ----
+const MUESTRA_PARCELAS={type:"FeatureCollection",features:[
+  {type:"Feature",properties:{barrio:"Aldea",lote:1,dueno:"Mauro y Lucy",tipo:"catastro"},
+   geometry:{type:"Polygon",coordinates:[[[-64.7220,-31.8535],[-64.7212,-31.8535],[-64.7212,-31.8542],[-64.7220,-31.8542],[-64.7220,-31.8535]]]}},
+  {type:"Feature",properties:{barrio:"Aldea",lote:2,dueno:"Eugenia y Sergio",tipo:"catastro"},
+   geometry:{type:"Polygon",coordinates:[[[-64.7212,-31.8535],[-64.7204,-31.8535],[-64.7204,-31.8542],[-64.7212,-31.8542],[-64.7212,-31.8535]]]}},
+  {type:"Feature",properties:{barrio:"Aldea",lote:3,dueno:null,tipo:"catastro"},
+   geometry:{type:"Polygon",coordinates:[[[-64.7220,-31.8542],[-64.7212,-31.8542],[-64.7212,-31.8549],[-64.7220,-31.8549],[-64.7220,-31.8542]]]}},
+  {type:"Feature",properties:{barrio:"Aldea",lote:12,dueno:"Jorge Estenssoro",tipo:"nocatastro"},
+   geometry:{type:"Polygon",coordinates:[[[-64.7204,-31.8542],[-64.7195,-31.8541],[-64.7197,-31.8550],[-64.7205,-31.8549],[-64.7204,-31.8542]]]}}
+]};
+const MUESTRA_AGUA={type:"FeatureCollection",features:[
+  {type:"Feature",properties:{codigo:"Tanq Acopio",capacidad_l:5000},geometry:{type:"Point",coordinates:[-64.7216,-31.8538]}},
+  {type:"Feature",properties:{codigo:"Tanq Casa",capacidad_l:1100},geometry:{type:"Point",coordinates:[-64.7207,-31.8546]}},
+  {type:"Feature",properties:{codigo:"Mang 1pul"},geometry:{type:"LineString",coordinates:[[-64.7216,-31.8538],[-64.7212,-31.8541],[-64.7207,-31.8546]]}}
+]};
+
+init();
+</script>
+</body>
+</html>
