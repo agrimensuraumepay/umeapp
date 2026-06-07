@@ -19,8 +19,9 @@ body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:
 .leyenda{background:#f5f5f0;padding:9px 16px;display:flex;gap:14px;flex-wrap:wrap;font-size:12px;align-items:center;border-top:0.5px solid #e0e0d8}
 .ll{display:inline-flex;align-items:center;gap:6px}
 .sw{width:16px;height:12px;border-radius:2px;display:inline-block}
-.sw.cat{background:#2d5a3d4d;border:1.5px solid #2d5a3d}
-.sw.noc{background:#b9772a40;border:1.5px dashed #b9772a}
+.sw.ume{background:#2d5a3d52;border:1.6px solid #2d5a3d}
+.sw.fuera{background:#9a9e931f;border:1.6px solid #9a9e93}
+.sw.sinreg{background:#2d5a3d29;border:1.6px dashed #2d5a3d}
 .sw.agua{width:12px;height:12px;border-radius:50%;background:#1d6fb8;border:2px solid #fff;box-shadow:0 0 0 1px #1d6fb8}
 .popup b{font-size:15px;color:#2d5a3d;display:block;margin-bottom:4px}
 .popup .row{font-size:13px;padding:1px 0}
@@ -36,8 +37,9 @@ body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:
 <div id="aviso" class="aviso"></div>
 <div id="map"></div>
 <div class="leyenda">
-  <span class="ll"><span class="sw cat"></span> Registrada</span>
-  <span class="ll"><span class="sw noc"></span> Sin registrar</span>
+  <span class="ll"><span class="sw ume"></span> Umepay</span>
+  <span class="ll"><span class="sw fuera"></span> Fuera de Umepay</span>
+  <span class="ll"><span class="sw sinreg"></span> Sin registrar</span>
   <span class="ll"><span class="sw agua"></span> Red de agua</span>
 </div>
 
@@ -60,11 +62,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 // ---- Estilos ----
 function estiloParcela(f){
   const p=f.properties||{};
-  const est = String(p.EstadoCat||p.estado||p.tipo||'').toLowerCase().trim();
-  const registrado = est===''||est==='registrado'||est==='catastro';
-  const noReg = !registrado;
-  return {color:noReg?'#b9772a':'#2d5a3d', weight:1.5, dashArray:noReg?'5,4':null,
-          fillColor:noReg?'#b9772a':'#2d5a3d', fillOpacity:noReg?0.20:0.30};
+  const esUmepay = String(p.Umepay||'').trim().toLowerCase()==='si';
+  const registrado = String(p.EstadoCat||'').trim().toLowerCase()==='registrado';
+  const base = esUmepay ? '#2d5a3d' : '#9a9e93';
+  return {color:base, weight:1.6, dashArray:registrado?null:'5,4',
+          fillColor:base, fillOpacity:esUmepay?0.32:0.12};
 }
 function colorAgua(cod){
   cod=(cod||'').toLowerCase();
@@ -76,22 +78,22 @@ function colorAgua(cod){
 }
 
 // ---- Popup generico: muestra TODOS los campos que tenga el elemento ----
-const ETIQUETAS={EstadoCat:'Estado catastral','Sup(m2)':'Superficie',FID:'ID',dueno:'Dueño',barrio:'Barrio',codigo:'Código',capacidad_l:'Capacidad'};
+const ETIQUETAS={Barrio:'Barrio',NumParc:'Parcela N°',EstadoCat:'Estado catastral',TipoTitula:'Titularidad',Titular_es:'Titular',Umepay:'Umepay','Sup(m2)':'Superficie',dueno:'Dueño',codigo:'Código',capacidad_l:'Capacidad'};
+const VALORES={SinRegistrar:'Sin registrar',Registrado:'Registrado',TitularUnico:'Titular único',Si:'Sí',No:'No'};
+function vacio(v){return v===null||v===''||String(v).toUpperCase()==='NULL';}
 function pretty(k){return ETIQUETAS[k] || (k.charAt(0).toUpperCase()+k.slice(1).replace(/_/g,' '));}
 function valor(k,v){
-  if(/sup/i.test(k) && !isNaN(parseFloat(v))){
-    const m2=parseFloat(v);
-    const txt=m2.toLocaleString('es-AR',{maximumFractionDigits:0})+' m²';
-    return m2>=10000 ? txt+' ('+(m2/10000).toLocaleString('es-AR',{maximumFractionDigits:1})+' ha)' : txt;
-  }
-  return v;
+  if(/sup/i.test(k) && !isNaN(parseFloat(v)))
+    return (parseFloat(v)/10000).toLocaleString('es-AR',{maximumFractionDigits:2})+' ha';
+  return VALORES[v] || v;
 }
 function popup(props){
   props=props||{};
-  const titulo = props.lote!=null ? 'Lote '+props.lote
-               : (props.codigo || props.nombre || (props.FID!=null?'Parcela '+props.FID:'Detalle'));
+  const num = props.NumParc!=null ? props.NumParc : props.lote;
+  const titulo = num!=null ? 'Parcela '+num : (props.codigo || props.nombre || 'Detalle');
+  const ocultar = ['lote','NumParc','FID'];
   const filas = Object.entries(props)
-    .filter(([k,v])=> v!==null && v!=='' && k!=='lote')
+    .filter(([k,v])=> !vacio(v) && !ocultar.includes(k))
     .map(([k,v])=>`<div class="row"><span class="k">${pretty(k)}:</span> ${valor(k,v)}</div>`)
     .join('');
   return `<div class="popup"><b>${titulo}</b>${filas}</div>`;
