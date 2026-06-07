@@ -60,7 +60,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
 // ---- Estilos ----
 function estiloParcela(f){
   const p=f.properties||{};
-  const noReg = String(p.tipo||p.estado||'').toLowerCase().includes('no');
+  const est = String(p.EstadoCat||p.estado||p.tipo||'').toLowerCase().trim();
+  const registrado = est===''||est==='registrado'||est==='catastro';
+  const noReg = !registrado;
   return {color:noReg?'#b9772a':'#2d5a3d', weight:1.5, dashArray:noReg?'5,4':null,
           fillColor:noReg?'#b9772a':'#2d5a3d', fillOpacity:noReg?0.20:0.30};
 }
@@ -74,14 +76,23 @@ function colorAgua(cod){
 }
 
 // ---- Popup generico: muestra TODOS los campos que tenga el elemento ----
-function pretty(k){return k.charAt(0).toUpperCase()+k.slice(1).replace(/_/g,' ');}
+const ETIQUETAS={EstadoCat:'Estado catastral','Sup(m2)':'Superficie',FID:'ID',dueno:'Dueño',barrio:'Barrio',codigo:'Código',capacidad_l:'Capacidad'};
+function pretty(k){return ETIQUETAS[k] || (k.charAt(0).toUpperCase()+k.slice(1).replace(/_/g,' '));}
+function valor(k,v){
+  if(/sup/i.test(k) && !isNaN(parseFloat(v))){
+    const m2=parseFloat(v);
+    const txt=m2.toLocaleString('es-AR',{maximumFractionDigits:0})+' m²';
+    return m2>=10000 ? txt+' ('+(m2/10000).toLocaleString('es-AR',{maximumFractionDigits:1})+' ha)' : txt;
+  }
+  return v;
+}
 function popup(props){
   props=props||{};
   const titulo = props.lote!=null ? 'Lote '+props.lote
-               : (props.codigo || props.nombre || 'Detalle');
+               : (props.codigo || props.nombre || (props.FID!=null?'Parcela '+props.FID:'Detalle'));
   const filas = Object.entries(props)
     .filter(([k,v])=> v!==null && v!=='' && k!=='lote')
-    .map(([k,v])=>`<div class="row"><span class="k">${pretty(k)}:</span> ${v}</div>`)
+    .map(([k,v])=>`<div class="row"><span class="k">${pretty(k)}:</span> ${valor(k,v)}</div>`)
     .join('');
   return `<div class="popup"><b>${titulo}</b>${filas}</div>`;
 }
