@@ -13,6 +13,7 @@ body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;max-width
 .topbar h1{color:#e8f5e2;font-size:17px;font-weight:500;flex:1}
 .btn-back{color:#9ecfb0;font-size:22px;background:none;border:none;text-decoration:none;cursor:pointer}
 .content{padding:14px;padding-bottom:30px}
+.paso{display:none}.paso.on{display:block}
 .card{background:#fff;border:0.5px solid #e0e0d8;border-radius:12px;padding:14px 16px;margin-bottom:10px}
 .row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:0.5px solid #f0f0e8}
 .row:last-child{border-bottom:none}
@@ -21,6 +22,12 @@ body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;max-width
 .inp{width:100%;padding:10px 13px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:11px;background:#fff}
 .btn-p{background:#2d5a3d;color:#e8f5e2;border:none;border-radius:8px;padding:12px 18px;font-size:14px;font-weight:500;width:100%;cursor:pointer}
 .btn-s{background:#fff;color:#2d5a3d;border:1.5px solid #2d5a3d;border-radius:8px;padding:12px 18px;font-size:14px;font-weight:500;width:100%;cursor:pointer}
+.aviso{background:#eaf3de;border-radius:8px;padding:12px;font-size:13px;color:#3b6d11;margin-bottom:12px}
+.ok{text-align:center;padding:30px 10px}
+.ok i{font-size:54px;color:#2e9e54}
+.ok h2{font-size:19px;margin:10px 0 6px;font-weight:600}
+.ok p{font-size:14px;color:#666;margin-bottom:18px}
+.muted{font-size:12px;color:#999}
 </style>
 </head>
 <body>
@@ -29,57 +36,96 @@ body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;max-width
   <h1>UmeGas</h1>
 </div>
 <div class="content">
-  <div class="slabel" style="margin-top:0">Precios actuales · al 29/5/26</div>
-  <div class="card" style="margin-bottom:14px">
-    <div class="row"><div class="lname">45 K (tubo alto)</div><div style="font-weight:500">$113.000</div></div>
-    <div class="row"><div class="lname">30 K</div><div style="font-weight:500">$78.000</div></div>
-    <div class="row"><div class="lname">15 K (garrafa alta)</div><div style="font-weight:500">$50.000</div></div>
-    <div class="row"><div class="lname">10 K (garrafa baja)</div><div style="font-weight:500">$37.000</div></div>
-    <div style="font-size:11px;color:#aaa;margin-top:8px">+ $300 por transferencia · Alias: gas.centro.mejor (Norma Torres)</div>
+
+  <!-- PASO 1: pedido -->
+  <div id="paso1" class="paso on">
+    <div class="slabel" style="margin-top:0">Precios actuales · al 29/5/26</div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="row"><div class="lname">45 K (tubo alto)</div><div style="font-weight:500">$113.000</div></div>
+      <div class="row"><div class="lname">30 K</div><div style="font-weight:500">$78.000</div></div>
+      <div class="row"><div class="lname">15 K (garrafa alta)</div><div style="font-weight:500">$50.000</div></div>
+      <div class="row"><div class="lname">10 K (garrafa baja)</div><div style="font-weight:500">$37.000</div></div>
+      <div class="muted" style="margin-top:8px">+ $300 por transferencia · Alias: gas.centro.mejor (Norma Torres)</div>
+    </div>
+
+    <div class="slabel">Tu pedido</div>
+    <div class="card">
+      <div style="font-size:13px;color:#888;margin-bottom:8px">Nombre / lote</div>
+      <select class="inp" id="gas-lote" style="margin-bottom:12px">
+        <option value="">Elegí tu lote...</option>
+        <option>1. Mauro y Lucy</option><option>2. Eugenia y Sergio</option><option>3. Barro Tal Vez (Batá)</option><option>4. Acros (Coni+Rodri+Bambú)</option><option>5. Casa Kurry</option><option>6. Cris Porto</option><option>7. Danila Tōshin y Noe</option><option>8. Amrit</option><option>9. Ceci Estenssoro</option><option>10. Ana Estenssoro</option><option>11. Santi Calvo</option><option>12. Jorge Estenssoro</option><option>13. Julieta y Robert</option><option>14. Maru y Eze (Domo)</option><option>15. Luciana (Ex Nacho)</option><option>16. Roberto Gallelli</option><option>17. Ademir</option><option>18. María Elena</option><option>19. Stephy y Mauro</option><option>20. Nati Tevelez</option><option>21. Mica Jere y Quimey</option><option>22. Casa Colibrí</option><option>23. Lau Petrolo (TheoLab)</option><option>24. Mati Echeguren</option><option>25. Caro y Ger (DeJa)</option><option>26. Ana Altavista</option><option>27. Bavali</option><option>28. Obrador 100T</option><option>29. Fran Fabre</option><option>30. Caro Martin y Aaron</option><option>31. Tonga</option><option>32. Daphne (Emilse)</option><option>33. Ceci Gus Haruki Akemi</option><option>34. Vivi</option><option>35. Nico Villa</option><option>36. Pau (Titi Pañalera)</option><option>37. Tristán</option><option>38. Mario Paixao</option><option>39. Maga de Masi</option><option>40. Carla Lucas Raiza</option><option>41. Gina y Noe</option><option>42. Vale Bai</option><option>43. Casa 4F</option><option>44. Fran Herni y Feli (Renoleta)</option><option>45. Marcelo y Mariana (ikonicoff)</option><option>46. Eli Lucho Luz y Tomoteo</option><option>47. Ro Ari Andina Marino</option><option>48. Graciela Varela (Gaby)</option><option>49. Rodri Rasta</option><option>50. Casa Aurora</option><option>51. Marina Britos (Ford Roja)</option><option>52. Agos Espeche (Debora)</option><option>53. Daniela Dewey</option><option>54. Juan Dixon</option><option>55. Eze Molina</option><option>56. Magda Chattah</option><option>57. Julieta Nacho Silvestre</option><option>58. Guille Morano</option><option>59. Martin Corral</option><option>60. Cami Joaco Selva</option><option>61. Clari Canale</option><option>62. Lau Dillon (Aixa)</option><option>63. Ger Vidal Haan</option><option>64. Nina+Tomy (Coni Soria)</option><option>65. Anabella Osky y Aloe</option><option>66. Sen de Campo (Despensa)</option><option>67. Cintya y Orión</option><option>68. Luna (Fondo izquierda)</option><option>69. Seba Panero (Fondo derecha)</option><option>70. Maru Mati y León</option><option>71. Carlitos</option><option>72. Belén</option><option>73. Adri</option><option>74. Ulises</option><option>75. Ornella (La Vieja Osada)</option><option>76. Erci</option><option>77. Natacha</option><option>78. Siembra Dicha</option><option>79. Oficina 100T</option><option>80. Ceci Sonzini</option><option>81. Mara</option><option>82. Leo Miraglia</option><option>83. Carolina (3R)</option><option>84. Lindsay y Mati (Dutto)</option><option>85. Milly Hirschon (3R)</option><option>86. Cabaña Pileta (La Vic)</option><option>87. Cabaña Medio (La Vic)</option><option>88. Cabaña Fondo (La Vic)</option><option>92. Coles</option><option>93. Magui Riachi</option><option>94. Rochi Juampi Awara</option><option>95. Laura Kalauz (3R)</option><option>96. Clara Terán (3R)</option><option>97. Fran Barlett</option><option>98. Ikonikoff Acacias</option><option>99. La Audelina (Casa Principal fondo)</option><option>100. Nati Damo Nina Simón</option><option>101. Tiny House (Ikonikoff Acacias)</option><option>102. Escuela Umepay</option><option>103. Lu y Fede (Entrando a Kurry)</option><option>104. Johy (entre Bavali y Tristan)</option><option>105. Magda Zucchi</option><option>106. Chacra Alimento</option><option>107. Vicente Nadal</option><option>108. Gise (Nueva en 3 Ríos)</option><option>109. Rosa María (Lucio)</option><option>110. Oficina Pueblo Vivo</option><option>111. Martín Corral (Flor/Pela)</option><option>112. Mercedes Taranto</option><option>113. Robert (Casa Amor)</option><option>114. Mariano Quiroga</option><option>115. Mario Chacón (Lote Hugo)</option>
+      </select>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">Cantidad por tipo</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div><div style="font-size:12px;color:#888">45 K</div><input class="inp" type="number" id="g45" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
+        <div><div style="font-size:12px;color:#888">30 K</div><input class="inp" type="number" id="g30" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
+        <div><div style="font-size:12px;color:#888">15 K</div><input class="inp" type="number" id="g15" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
+        <div><div style="font-size:12px;color:#888">10 K</div><input class="inp" type="number" id="g10" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
+      </div>
+      <div style="font-size:13px;color:#888;margin-bottom:6px">Forma de pago</div>
+      <div style="display:flex;gap:8px;margin-bottom:12px">
+        <button id="btn-ef" onclick="setPago('efectivo')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #2d5a3d;background:#eaf3de;color:#2d5a3d;font-size:13px;cursor:pointer">Efectivo</button>
+        <button id="btn-tr" onclick="setPago('transferencia')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #ddd;background:#fff;color:#888;font-size:13px;cursor:pointer">Transferencia</button>
+      </div>
+      <div style="font-size:13px;color:#888;margin-bottom:6px">Urgencia</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button id="btn-tranq" onclick="setUrgencia('tranquila')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #2d5a3d;background:#eaf3de;color:#2d5a3d;font-size:13px;cursor:pointer">Tranquila</button>
+        <button id="btn-urg" onclick="setUrgencia('urgente')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #ddd;background:#fff;color:#888;font-size:13px;cursor:pointer">Urgente</button>
+      </div>
+      <div id="total-gas" style="background:#f5f5f0;border-radius:8px;padding:12px;margin-bottom:14px;font-size:15px;font-weight:500;text-align:center">Total: $0</div>
+      <button class="btn-p" onclick="hacerPedido()">Hacer pedido</button>
+    </div>
+
+    <div class="slabel">Emergencias</div>
+    <div class="card">
+      <div style="font-size:13px;color:#888;margin-bottom:10px">Depósito de emergencia: Sen de Campo (Despensa) · +10% sobre precio Lalo</div>
+      <a href="https://wa.me/543546521604" target="_blank" class="btn-s" style="display:block;text-align:center;text-decoration:none;padding:11px">Contactar a Ezequiel (Lalo Gas)</a>
+    </div>
   </div>
 
-  <div class="slabel">Tu pedido</div>
-  <div class="card">
-    <div style="font-size:13px;color:#888;margin-bottom:8px">Nombre / lote</div>
-    <select class="inp" id="gas-lote" style="margin-bottom:12px">
-      <option value="">Elegí tu lote...</option>
-      <option>1. Mauro y Lucy</option><option>2. Eugenia y Sergio</option><option>3. Barro Tal Vez (Batá)</option><option>4. Acros (Coni+Rodri+Bambú)</option><option>5. Casa Kurry</option><option>6. Cris Porto</option><option>7. Danila Tōshin y Noe</option><option>8. Amrit</option><option>9. Ceci Estenssoro</option><option>10. Ana Estenssoro</option><option>11. Santi Calvo</option><option>12. Jorge Estenssoro</option><option>13. Julieta y Robert</option><option>14. Maru y Eze (Domo)</option><option>15. Luciana (Ex Nacho)</option><option>16. Roberto Gallelli</option><option>17. Ademir</option><option>18. María Elena</option><option>19. Stephy y Mauro</option><option>20. Nati Tevelez</option><option>21. Mica Jere y Quimey</option><option>22. Casa Colibrí</option><option>23. Lau Petrolo (TheoLab)</option><option>24. Mati Echeguren</option><option>25. Caro y Ger (DeJa)</option><option>26. Ana Altavista</option><option>27. Bavali</option><option>28. Obrador 100T</option><option>29. Fran Fabre</option><option>30. Caro Martin y Aaron</option><option>31. Tonga</option><option>32. Daphne (Emilse)</option><option>33. Ceci Gus Haruki Akemi</option><option>34. Vivi</option><option>35. Nico Villa</option><option>36. Pau (Titi Pañalera)</option><option>37. Tristán</option><option>38. Mario Paixao</option><option>39. Maga de Masi</option><option>40. Carla Lucas Raiza</option><option>41. Gina y Noe</option><option>42. Vale Bai</option><option>43. Casa 4F</option><option>44. Fran Herni y Feli (Renoleta)</option><option>45. Marcelo y Mariana (ikonicoff)</option><option>46. Eli Lucho Luz y Tomoteo</option><option>47. Ro Ari Andina Marino</option><option>48. Graciela Varela (Gaby)</option><option>49. Rodri Rasta</option><option>50. Casa Aurora</option><option>51. Marina Britos (Ford Roja)</option><option>52. Agos Espeche (Debora)</option><option>53. Daniela Dewey</option><option>54. Juan Dixon</option><option>55. Eze Molina</option><option>56. Magda Chattah</option><option>57. Julieta Nacho Silvestre</option><option>58. Guille Morano</option><option>59. Martin Corral</option><option>60. Cami Joaco Selva</option><option>61. Clari Canale</option><option>62. Lau Dillon (Aixa)</option><option>63. Ger Vidal Haan</option><option>64. Nina+Tomy (Coni Soria)</option><option>65. Anabella Osky y Aloe</option><option>66. Sen de Campo (Despensa)</option><option>67. Cintya y Orión</option><option>68. Luna (Fondo izquierda)</option><option>69. Seba Panero (Fondo derecha)</option><option>70. Maru Mati y León</option><option>71. Carlitos</option><option>72. Belén</option><option>73. Adri</option><option>74. Ulises</option><option>75. Ornella (La Vieja Osada)</option><option>76. Erci</option><option>77. Natacha</option><option>78. Siembra Dicha</option><option>79. Oficina 100T</option><option>80. Ceci Sonzini</option><option>81. Mara</option><option>82. Leo Miraglia</option><option>83. Carolina (3R)</option><option>84. Lindsay y Mati (Dutto)</option><option>85. Milly Hirschon (3R)</option><option>86. Cabaña Pileta (La Vic)</option><option>87. Cabaña Medio (La Vic)</option><option>88. Cabaña Fondo (La Vic)</option><option>92. Coles</option><option>93. Magui Riachi</option><option>94. Rochi Juampi Awara</option><option>95. Laura Kalauz (3R)</option><option>96. Clara Terán (3R)</option><option>97. Fran Barlett</option><option>98. Ikonikoff Acacias</option><option>99. La Audelina (Casa Principal fondo)</option><option>100. Nati Damo Nina Simón</option><option>101. Tiny House (Ikonikoff Acacias)</option><option>102. Escuela Umepay</option><option>103. Lu y Fede (Entrando a Kurry)</option><option>104. Johy (entre Bavali y Tristan)</option><option>105. Magda Zucchi</option><option>106. Chacra Alimento</option><option>107. Vicente Nadal</option><option>108. Gise (Nueva en 3 Ríos)</option><option>109. Rosa María (Lucio)</option><option>110. Oficina Pueblo Vivo</option><option>111. Martín Corral (Flor/Pela)</option><option>112. Mercedes Taranto</option><option>113. Robert (Casa Amor)</option><option>114. Mariano Quiroga</option><option>115. Mario Chacón (Lote Hugo)</option>
-    </select>
-    <div style="font-size:13px;color:#888;margin-bottom:8px">Cantidad por tipo</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-      <div><div style="font-size:12px;color:#888">45 K</div><input class="inp" type="number" id="g45" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
-      <div><div style="font-size:12px;color:#888">30 K</div><input class="inp" type="number" id="g30" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
-      <div><div style="font-size:12px;color:#888">15 K</div><input class="inp" type="number" id="g15" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
-      <div><div style="font-size:12px;color:#888">10 K</div><input class="inp" type="number" id="g10" min="0" value="0" style="margin:4px 0 0;text-align:center" oninput="calcGas()"/></div>
+  <!-- PASO 2: comprobante -->
+  <div id="paso2" class="paso">
+    <div class="slabel" style="margin-top:0">Pago</div>
+    <div class="aviso">Pedido registrado. Para concretarlo, pagá y subí el comprobante.</div>
+    <div class="card">
+      <div id="resumen" style="font-size:13px;color:#555;margin-bottom:10px"></div>
+      <div class="row"><div class="lname">Total a pagar</div><div id="totalPago" style="font-weight:600"></div></div>
+      <div class="row"><div class="lname">Alias</div><div style="font-weight:500">gas.centro.mejor</div></div>
+      <div class="muted" style="margin-top:8px">Titular: Norma Torres · si es transferencia ya incluye los $300</div>
     </div>
-    <div style="font-size:13px;color:#888;margin-bottom:6px">Forma de pago</div>
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <button id="btn-ef" onclick="setPago('efectivo')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #2d5a3d;background:#eaf3de;color:#2d5a3d;font-size:13px;cursor:pointer">Efectivo</button>
-      <button id="btn-tr" onclick="setPago('transferencia')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #ddd;background:#fff;color:#888;font-size:13px;cursor:pointer">Transferencia</button>
+    <div class="slabel">Comprobante</div>
+    <div class="card">
+      <div style="font-size:13px;color:#888;margin-bottom:10px">Subí el comprobante de transferencia o una foto de dónde dejaste el dinero.</div>
+      <input class="inp" type="file" id="comprobante" accept="image/*"/>
+      <button class="btn-p" id="btnComp" onclick="enviarComprobante()">Enviar comprobante</button>
     </div>
-    <div style="font-size:13px;color:#888;margin-bottom:6px">Urgencia</div>
-    <div style="display:flex;gap:8px;margin-bottom:14px">
-      <button id="btn-tranq" onclick="setUrgencia('tranquila')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #2d5a3d;background:#eaf3de;color:#2d5a3d;font-size:13px;cursor:pointer">Tranquila</button>
-      <button id="btn-urg" onclick="setUrgencia('urgente')" style="flex:1;padding:8px;border-radius:8px;border:1.5px solid #ddd;background:#fff;color:#888;font-size:13px;cursor:pointer">Urgente</button>
-    </div>
-    <div id="total-gas" style="background:#f5f5f0;border-radius:8px;padding:12px;margin-bottom:14px;font-size:15px;font-weight:500;text-align:center">Total: $0</div>
-    <button class="btn-p" onclick="enviarGas()">Enviar pedido por WhatsApp</button>
   </div>
 
-  <div class="slabel">Emergencias</div>
-  <div class="card">
-    <div style="font-size:13px;color:#888;margin-bottom:10px">Depósito de emergencia: Sen de Campo (Despensa) · +10% sobre precio Lalo</div>
-    <a href="https://wa.me/543546521604" target="_blank" class="btn-s" style="display:block;text-align:center;text-decoration:none;padding:11px">Contactar a Ezequiel (Lalo Gas)</a>
+  <!-- PASO 3: listo -->
+  <div id="paso3" class="paso">
+    <div class="ok">
+      <i class="ti ti-circle-check"></i>
+      <h2>¡Pedido concretado!</h2>
+      <p>Lalo lo va a marcar como entregado cuando lleve tu gas. Gracias.</p>
+      <a class="btn-s" href="index.html" style="display:block;text-align:center;text-decoration:none">Volver al inicio</a>
+    </div>
   </div>
+
 </div>
 
 <script>
-let pagoMode='efectivo', urgMode='tranquila';
+// Pegá acá la URL de tu app web de Apps Script (termina en /exec)
+const GAS_URL = '';
+
+let pagoMode='efectivo', urgMode='tranquila', totalNum=0, pedidoActual=null;
+
 function calcGas(){
   const p={45:113000,30:78000,15:50000,10:37000};
-  let t=parseInt(document.getElementById('g45').value||0)*p[45]+parseInt(document.getElementById('g30').value||0)*p[30]+parseInt(document.getElementById('g15').value||0)*p[15]+parseInt(document.getElementById('g10').value||0)*p[10];
-  if(pagoMode==='transferencia')t+=300;
-  document.getElementById('total-gas').textContent='Total: $'+t.toLocaleString('es-AR');
+  const c45=+document.getElementById('g45').value||0, c30=+document.getElementById('g30').value||0,
+        c15=+document.getElementById('g15').value||0, c10=+document.getElementById('g10').value||0;
+  totalNum=c45*p[45]+c30*p[30]+c15*p[15]+c10*p[10];
+  if(totalNum>0 && pagoMode==='transferencia') totalNum+=300;
+  document.getElementById('total-gas').textContent='Total: $'+totalNum.toLocaleString('es-AR');
 }
 function setPago(m){
   pagoMode=m;
@@ -100,16 +146,52 @@ function setUrgencia(m){
   document.getElementById('btn-urg').style.color=m==='urgente'?'#854f0b':'#888';
   document.getElementById('btn-urg').style.borderColor=m==='urgente'?'#854f0b':'#ddd';
 }
-function enviarGas(){
+function mostrar(id){document.querySelectorAll('.paso').forEach(p=>p.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
+function enviar(payload){
+  return fetch(GAS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+}
+
+async function hacerPedido(){
+  if(!GAS_URL){alert('Falta configurar la conexión (GAS_URL). Avisale a quien administra la app.');return;}
   const lote=document.getElementById('gas-lote').value;
   if(!lote){alert('Elegí tu lote primero');return;}
-  const c45=document.getElementById('g45').value||0, c30=document.getElementById('g30').value||0, c15=document.getElementById('g15').value||0, c10=document.getElementById('g10').value||0;
-  if(c45==0&&c30==0&&c15==0&&c10==0){alert('Agregá al menos una garrafa');return;}
-  const total=document.getElementById('total-gas').textContent;
-  let msg='PEDIDO UMEGAS\n\nLote: '+lote+'\n';
-  if(c45>0)msg+='45K: '+c45+'\n';if(c30>0)msg+='30K: '+c30+'\n';if(c15>0)msg+='15K: '+c15+'\n';if(c10>0)msg+='10K: '+c10+'\n';
-  msg+='\nPago: '+pagoMode+'\n'+total+'\nUrgencia: '+urgMode+'\n\nAlias: gas.centro.mejor';
-  window.open('https://wa.me/543546521604?text='+encodeURIComponent(msg),'_blank');
+  const c45=+document.getElementById('g45').value||0, c30=+document.getElementById('g30').value||0,
+        c15=+document.getElementById('g15').value||0, c10=+document.getElementById('g10').value||0;
+  if(c45+c30+c15+c10===0){alert('Agregá al menos una garrafa');return;}
+  calcGas();
+  const id='P'+Date.now()+Math.floor(Math.random()*900+100);
+  pedidoActual={accion:'pedido',id,lote,c45,c30,c15,c10,pago:pagoMode,urgencia:urgMode,total:totalNum};
+  try{ await enviar(pedidoActual); }catch(e){}
+  const partes=[]; if(c45)partes.push('45K x'+c45); if(c30)partes.push('30K x'+c30); if(c15)partes.push('15K x'+c15); if(c10)partes.push('10K x'+c10);
+  document.getElementById('resumen').textContent=lote+' · '+partes.join(', ');
+  document.getElementById('totalPago').textContent='$'+totalNum.toLocaleString('es-AR');
+  mostrar('paso2');
+}
+
+function comprimir(file, cb){
+  const r=new FileReader();
+  r.onload=()=>{
+    const img=new Image();
+    img.onload=()=>{
+      const max=1200; let w=img.width, h=img.height;
+      if(w>max||h>max){const s=Math.min(max/w,max/h); w=Math.round(w*s); h=Math.round(h*s);}
+      const c=document.createElement('canvas'); c.width=w; c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      cb(c.toDataURL('image/jpeg',0.7).split(',')[1]);
+    };
+    img.src=r.result;
+  };
+  r.readAsDataURL(file);
+}
+
+function enviarComprobante(){
+  const f=document.getElementById('comprobante').files[0];
+  if(!f){alert('Elegí o sacá una foto del comprobante');return;}
+  const btn=document.getElementById('btnComp'); btn.textContent='Enviando...'; btn.disabled=true;
+  comprimir(f, async(b64)=>{
+    try{ await enviar({accion:'comprobante', id:pedidoActual.id, imagen:b64, tipo:'image/jpeg'}); }catch(e){}
+    mostrar('paso3');
+  });
 }
 </script>
 </body>
