@@ -162,12 +162,12 @@ body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;max-width
 <div id="s-gas" class="screen">
   <div class="topbar"><button class="btn-back" onclick="go('s-home')"><i class="ti ti-arrow-left"></i></button><h1>UmeGas</h1></div>
   <div class="content">
-    <div class="slabel" style="margin-top:0">Precios actuales</div>
+    <div class="slabel" style="margin-top:0">Precios actuales · al 29/5/26</div>
     <div class="card" style="margin-bottom:14px">
-      <div class="row"><div class="lname">45 K (tubo alto)</div><div style="font-weight:500">$105.000</div></div>
-      <div class="row"><div class="lname">30 K</div><div style="font-weight:500">$67.000</div></div>
-      <div class="row"><div class="lname">15 K (garrafa alta)</div><div style="font-weight:500">$45.000</div></div>
-      <div class="row"><div class="lname">10 K (garrafa baja)</div><div style="font-weight:500">$33.000</div></div>
+      <div class="row"><div class="lname">45 K (tubo alto)</div><div style="font-weight:500">$113.000</div></div>
+      <div class="row"><div class="lname">30 K</div><div style="font-weight:500">$78.000</div></div>
+      <div class="row"><div class="lname">15 K (garrafa alta)</div><div style="font-weight:500">$50.000</div></div>
+      <div class="row"><div class="lname">10 K (garrafa baja)</div><div style="font-weight:500">$37.000</div></div>
       <div style="font-size:11px;color:#aaa;margin-top:8px">+ $300 por transferencia · Alias: gas.centro.mejor (Norma Torres)</div>
     </div>
     <div class="slabel">Tu pedido</div>
@@ -288,7 +288,7 @@ function installApp(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=
 
 let pagoMode='efectivo', urgMode='tranquila';
 function calcGas(){
-  const p={45:105000,30:67000,15:45000,10:33000};
+  const p={45:113000,30:78000,15:50000,10:37000};
   let t=parseInt(document.getElementById('g45').value||0)*p[45]+parseInt(document.getElementById('g30').value||0)*p[30]+parseInt(document.getElementById('g15').value||0)*p[15]+parseInt(document.getElementById('g10').value||0)*p[10];
   if(pagoMode==='transferencia')t+=300;
   document.getElementById('total-gas').textContent='Total: $'+t.toLocaleString('es-AR');
