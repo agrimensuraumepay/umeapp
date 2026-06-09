@@ -25,18 +25,22 @@ body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:
 .grp{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .glabel{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:.4px;width:100%}
 .ll{display:inline-flex;align-items:center;gap:6px}
+.ll i{font-size:16px}
 .sw{width:16px;height:12px;border-radius:2px;display:inline-block}
 .sw.ume{background:#2d5a3d52;border:1.6px solid #2d5a3d}
 .sw.sinreg{background:#2d5a3d29;border:1.6px dashed #2d5a3d}
 .dot{width:12px;height:12px;border-radius:50%;display:inline-block;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
-.sq{width:12px;height:12px;border-radius:3px;display:inline-block;background:#6b4f2a;border:2px solid #fff;box-shadow:0 0 0 1px #6b4f2a}
-.ring{width:11px;height:11px;border-radius:50%;display:inline-block;background:#fff;border:2px solid #d9480f}
 .line{width:18px;border-top:3px solid;display:inline-block}
+.ico{display:flex;align-items:center;justify-content:center}
+.ico i{line-height:1;text-shadow:0 0 2px #fff,0 0 3px #fff}
+.ico-galpon i{color:#1d6fb8;font-size:22px}
+.ico-dique i{color:#7f5bd0;font-size:22px}
+.ico-tranq i{color:#6b4f2a;font-size:17px}
+.ico-cruce i{color:#e03131;font-size:16px;font-weight:bold}
 .popup b{font-size:15px;color:#2d5a3d;display:block;margin-bottom:4px}
 .popup .row{font-size:13px;padding:1px 0}
 .popup .k{color:#888}
 .popup .corr{display:inline-block;margin-top:8px;font-size:12px;color:#2d5a3d;font-weight:500;text-decoration:none;border:1px solid #2d5a3d;border-radius:6px;padding:4px 9px}
-.tranq-ico{background:#6b4f2a;border:2px solid #fff;border-radius:3px;box-shadow:0 0 0 1px #6b4f2a}
 .leaflet-popup-content{margin:10px 12px}
 </style>
 </head>
@@ -55,11 +59,11 @@ body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:
       <span class="ll"><span class="sw sinreg"></span> Sin registrar</span>
     </div>
     <div class="grp"><span class="glabel">Agua</span>
-      <span class="ll"><span class="dot" style="background:#1d4ed8"></span> Acopio madre</span>
+      <span class="ll"><span class="dot" style="background:#1d4ed8;width:15px;height:15px"></span> Acopio madre</span>
       <span class="ll"><span class="dot" style="background:#2e9e54"></span> Tanque acopio</span>
-      <span class="ll"><span class="dot" style="background:#d4a017"></span> Tanque casa</span>
-      <span class="ll"><span class="dot" style="background:#7f5bd0"></span> Dique</span>
-      <span class="ll"><span class="dot" style="background:#4aa3df"></span> Estación brigada</span>
+      <span class="ll"><span class="dot" style="background:#d4a017;width:9px;height:9px"></span> Tanque casa</span>
+      <span class="ll"><i class="ti ti-ripple" style="color:#7f5bd0"></i> Dique</span>
+      <span class="ll"><i class="ti ti-building-warehouse" style="color:#1d6fb8"></i> Estación brigada</span>
     </div>
     <div class="grp"><span class="glabel">Mangueras</span>
       <span class="ll"><span class="line" style="border-color:#6f42c1"></span> 1"</span>
@@ -67,8 +71,8 @@ body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:
       <span class="ll"><span class="line" style="border-color:#22b8cf"></span> 3/4"</span>
     </div>
     <div class="grp"><span class="glabel">Otras</span>
-      <span class="ll"><span class="sq"></span> Tranquera</span>
-      <span class="ll"><span class="ring"></span> Cruce agua/calle</span>
+      <span class="ll"><i class="ti ti-circle-filled" style="color:#6b4f2a"></i> Tranquera</span>
+      <span class="ll"><i class="ti ti-x" style="color:#e03131;font-weight:bold"></i> Cruce agua/calle</span>
       <span class="ll"><span class="line" style="border-color:#8a5a2b"></span> Calles</span>
       <span class="ll"><span class="line" style="border-color:#2b7bba"></span> Cursos de agua</span>
       <span class="ll"><span class="line" style="border-color:#e67e22"></span> Ruta provincial</span>
@@ -79,8 +83,7 @@ body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const CENTRO=[-31.8543,-64.7210];
-const FORM_URL=''; // link del Google Form de correcciones (opcional)
-
+const FORM_URL='';
 const CAPAS=[
   {archivo:'data/parcelas.geojson',                nombre:'Parcelas',          clase:'parcela',  visible:true},
   {archivo:'data/puntos.geojson',                  nombre:'Puntos de agua',    clase:'aguaPunto',visible:true},
@@ -105,12 +108,11 @@ function estiloParcela(f){
   return {color:base,weight:1.5,dashArray:reg?null:'5,4',fillColor:base,fillOpacity:ume?0.30:0.10};
 }
 function colorAgua(v){v=norm(v);
-  if(v.includes('tanqcasa')||v.includes('casa')) return '#d4a017';
+  if(v.includes('casa')) return '#d4a017';
   if(v.includes('tanqacopio')) return '#2e9e54';
   if(v.includes('acopio')) return '#1d4ed8';
   if(v.includes('dique')) return '#7f5bd0';
   if(v.includes('brigada')) return '#4aa3df';
-  if(v.includes('valv')) return '#e24b4a';
   if(v.includes('1/2')) return '#e24b4a';
   if(v.includes('3/4')) return '#22b8cf';
   if(v==='1'||v.includes('mang')) return '#6f42c1';
@@ -118,6 +120,22 @@ function colorAgua(v){v=norm(v);
   return '#1d9e75';
 }
 function valCat(p){p=p||{};return p.Descripcio||p.Manguera||p.codigo||p.Codigo||p.Tipo||'';}
+
+const SIMB={circulo:'ti-circle-filled',estrella:'ti-star-filled',cuadrado:'ti-square-filled',luna:'ti-moon-filled',triangulo:'ti-triangle-filled'};
+function icoTab(cls,glyph,size){return L.divIcon({html:'<i class="ti '+glyph+'"></i>',className:'ico '+cls,iconSize:[size,size],iconAnchor:[size/2,size/2]});}
+function aguaMarker(f,ll){
+  const cat=norm(valCat(f.properties));
+  if(cat.includes('brigada')) return L.marker(ll,{icon:icoTab('ico-galpon','ti-building-warehouse',26)});
+  if(cat.includes('dique')) return L.marker(ll,{icon:icoTab('ico-dique','ti-ripple',24)});
+  let r=5;
+  if(cat.includes('tanqacopio')) r=7;
+  else if(cat.includes('acopio')) r=9;
+  else if(cat.includes('casa')) r=5;
+  else if(cat==='t') r=4;
+  return L.circleMarker(ll,{radius:r,color:'#fff',weight:2,fillColor:colorAgua(valCat(f.properties)),fillOpacity:1});
+}
+function tranqMarker(f,ll){const s=norm((f.properties||{}).Simbolo);return L.marker(ll,{icon:icoTab('ico-tranq',SIMB[s]||'ti-square-filled',19)});}
+function cruceMarker(f,ll){return L.marker(ll,{icon:icoTab('ico-cruce','ti-x',18)});}
 
 const ETIQUETAS={Barrio:'Barrio',NumParc:'Parcela N°',EstadoCat:'Estado catastral',TipoTitula:'Titularidad',Titular_es:'Titular',Umepay:'Umepay','Sup(m2)':'Superficie',Descripcio:'Tipo',Manguera:'Manguera',TipoRed:'Red',NivelRed:'Nivel',AcopioMadr:'Acopio madre',Litros:'Litros',Observacio:'Observación',AutoBomba:'Carga autobomba',Acople:'Acople',Disponibil:'Disponibilidad',Nombre_Ref:'Referencia',LoteNro:'Lote',Propietari:'Propietario',H:'Altura',Simbolo:'Símbolo',Nombre:'Nombre',Tipo:'Tipo',NOMBRE_COM:'Nombre',TIPO:'Tipo',ORDEN:'Orden',DEPARTAMEN:'Departamento',CUENCA:'Cuenca','Estado_de_':'Estado',red:'Red',rst:'Calzada',gna:'Tipo de vía'};
 const VALORES={SinRegistrar:'Sin registrar',Registrado:'Registrado',TitularUnico:'Titular único',Si:'Sí',No:'No',TanqAcopio:'Tanque acopio',TanqCasa:'Tanque casa',Acopio:'Acopio madre',Dique:'Dique','Estacion Brigada':'Estación brigada',T:'Bifurcación'};
@@ -129,13 +147,10 @@ const CAMPOS={
   cruce:['Manguera','TipoRed','Nombre','AcopioMadr','Barrio'],
   calle:['Tipo','Barrio']
 };
-function pretty(k){return ETIQUETAS[k] || (k.charAt(0).toUpperCase()+k.slice(1).replace(/_/g,' '));}
+function pretty(k){return ETIQUETAS[k]||(k.charAt(0).toUpperCase()+k.slice(1).replace(/_/g,' '));}
 function vacio(v){return v===null||v===''||String(v).toUpperCase()==='NULL';}
-function valor(k,v){
-  if(/sup/i.test(k)&&!isNaN(parseFloat(v))) return (parseFloat(v)/10000).toLocaleString('es-AR',{maximumFractionDigits:2})+' ha';
-  return VALORES[v]||v;
-}
-function popup(p, clase){
+function valor(k,v){if(/sup/i.test(k)&&!isNaN(parseFloat(v)))return (parseFloat(v)/10000).toLocaleString('es-AR',{maximumFractionDigits:2})+' ha';return VALORES[v]||v;}
+function popup(p,clase){
   p=p||{};
   let titulo;
   if(clase==='curso') titulo=p.NOMBRE_COM||'Curso de agua';
@@ -144,10 +159,7 @@ function popup(p, clase){
   else if(clase==='cruce') titulo='Cruce agua / calle';
   else if(clase==='calle') titulo=p.Nombre||'Calle';
   else if(clase==='aguaLinea') titulo=p.Manguera?('Manguera '+p.Manguera):'Línea de agua';
-  else { const num=p.NumParc!=null?p.NumParc:p.lote;
-    if(num!=null) titulo='Parcela '+num;
-    else { const c=valCat(p); titulo=VALORES[c]||c||p.nombre||'Detalle'; } }
-
+  else { const num=p.NumParc!=null?p.NumParc:p.lote; if(num!=null) titulo='Parcela '+num; else { const c=valCat(p); titulo=VALORES[c]||c||p.nombre||'Detalle'; } }
   let pares;
   if(CAMPOS[clase]) pares=CAMPOS[clase].map(k=>[k,p[k]]).filter(([k,v])=>!vacio(v));
   else pares=Object.entries(p).filter(([k,v])=>!vacio(v)&&!OCULTAR.includes(k));
@@ -159,10 +171,10 @@ function popup(p, clase){
 function agregarCapa(gj,clase,nombre,overlays,visible){
   const opts={onEachFeature:(f,l)=>l.bindPopup(popup(f.properties,clase))};
   if(clase==='parcela'){opts.style=estiloParcela;opts.pane='parcelasPane';}
-  else if(clase==='aguaPunto'){opts.pointToLayer=(f,ll)=>L.circleMarker(ll,{radius:7,color:'#fff',weight:2,fillColor:colorAgua(valCat(f.properties)),fillOpacity:1});}
+  else if(clase==='aguaPunto'){opts.pointToLayer=aguaMarker;}
   else if(clase==='aguaLinea'){opts.style=f=>({color:colorAgua(valCat(f.properties)),weight:3});}
-  else if(clase==='tranquera'){opts.pointToLayer=(f,ll)=>L.marker(ll,{icon:L.divIcon({className:'tranq-ico',iconSize:[13,13],iconAnchor:[7,7]})});}
-  else if(clase==='cruce'){opts.pointToLayer=(f,ll)=>L.circleMarker(ll,{radius:5,color:'#d9480f',weight:2,fillColor:'#fff',fillOpacity:1});}
+  else if(clase==='tranquera'){opts.pointToLayer=tranqMarker;}
+  else if(clase==='cruce'){opts.pointToLayer=cruceMarker;}
   else if(clase==='calle'){opts.style=f=>({color:'#8a5a2b',weight:2.5,dashArray:norm((f.properties||{}).Tipo).includes('entrada')?'5,4':null});}
   else if(clase==='curso'){opts.style={color:'#2b7bba',weight:2};}
   else if(clase==='vialProv'){opts.style={color:'#e67e22',weight:2.5};}
@@ -177,16 +189,10 @@ async function init(){
     try{
       const r=await fetch(c.archivo,{cache:'no-store'}); if(!r.ok)throw 0;
       const gj=await r.json(); agregarCapa(gj,c.clase,c.nombre,overlays,c.visible); n++;
-      if(c.clase==='parcela'){
-        const ume=L.geoJSON(gj,{filter:f=>String((f.properties||{}).Umepay||'').trim().toLowerCase()==='si'});
-        const b=ume.getBounds(); bounds=b.isValid()?b:L.geoJSON(gj).getBounds();
-      }
+      if(c.clase==='parcela'){const ume=L.geoJSON(gj,{filter:f=>String((f.properties||{}).Umepay||'').trim().toLowerCase()==='si'});const b=ume.getBounds();bounds=b.isValid()?b:L.geoJSON(gj).getBounds();}
     }catch(e){}
   }
-  if(n===0){
-    document.getElementById('aviso').textContent='No se pudieron cargar las capas. Revisá que estén en la carpeta data/.';
-    document.getElementById('aviso').style.display='block';
-  }
+  if(n===0){document.getElementById('aviso').textContent='No se pudieron cargar las capas. Revisá la carpeta data/.';document.getElementById('aviso').style.display='block';}
   L.control.layers(null,overlays,{collapsed:false}).addTo(map);
   if(bounds&&bounds.isValid())map.fitBounds(bounds.pad(0.05),{maxZoom:16});
 }
