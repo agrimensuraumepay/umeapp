@@ -10,7 +10,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:column;max-width:480px;margin:0 auto;background:#dfe6dc}
+body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:column;max-width:none;margin:0 auto;background:#dfe6dc}
 .topbar{background:#2d5a3d;padding:14px 16px;display:flex;align-items:center;gap:10px;z-index:10}
 .topbar h1{color:#e8f5e2;font-size:17px;font-weight:500;flex:1}
 .btn-back{color:#9ecfb0;font-size:22px;background:none;border:none;text-decoration:none;cursor:pointer}
@@ -197,6 +197,7 @@ async function init(){
   if(bounds&&bounds.isValid())map.fitBounds(bounds.pad(0.05),{maxZoom:16});
 }
 init();
+window.addEventListener('load',()=>setTimeout(()=>map.invalidateSize(),200));
 </script>
 </body>
 </html>
