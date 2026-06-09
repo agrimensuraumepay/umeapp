@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Umepay · UmeBlog</title>
+<meta name="theme-color" content="#2d5a3d"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f5f0;color:#1a1a1a;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:80px}
+.topbar{background:#2d5a3d;padding:14px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
+.topbar h1{color:#e8f5e2;font-size:17px;font-weight:500;flex:1}
+.btn-back{color:#9ecfb0;font-size:22px;background:none;border:none;text-decoration:none;cursor:pointer}
+.content{padding:14px}
+.intro{font-size:13px;color:#777;margin-bottom:14px}
+.post{background:#fff;border:0.5px solid #e0e0d8;border-radius:12px;padding:15px 16px;margin-bottom:11px}
+.ptit{font-size:16px;font-weight:600;color:#2d5a3d;margin-bottom:4px}
+.ptxt{font-size:14px;line-height:1.5;white-space:pre-wrap}
+.pmeta{font-size:12px;color:#999;margin-top:9px;display:flex;gap:10px;flex-wrap:wrap}
+.vacio{color:#aaa;font-size:13px;text-align:center;padding:24px 0}
+.fab{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#2d5a3d;color:#e8f5e2;border:none;border-radius:24px;padding:13px 22px;font-size:14px;font-weight:500;box-shadow:0 3px 10px rgba(0,0,0,.2);cursor:pointer;display:flex;align-items:center;gap:7px;z-index:20}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="btn-back" href="index.html"><i class="ti ti-arrow-left"></i></a>
+  <h1>UmeBlog</h1>
+</div>
+<div class="content">
+  <div class="intro">Un espacio para compartir una reflexión, una idea o lo que quieras con la comunidad.</div>
+  <div id="lista"></div>
+</div>
+<button class="fab" onclick="compartir()"><i class="ti ti-feather"></i> Compartir algo</button>
+
+<script>
+// Pegá acá tus links cuando los tengas
+const UMEBLOG_CSV  = ''; // hoja de respuestas publicada como CSV
+const UMEBLOG_FORM = ''; // Google Form "Compartir en UmeBlog"
+
+function sinAcento(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();}
+function parseCSV(t){
+  const rows=[]; let row=[],cur='',q=false;
+  for(let i=0;i<t.length;i++){const c=t[i];
+    if(q){ if(c=='"'){ if(t[i+1]=='"'){cur+='"';i++;} else q=false; } else cur+=c; }
+    else { if(c=='"')q=true; else if(c==','){row.push(cur);cur='';}
+      else if(c=='\n'){row.push(cur);rows.push(row);row=[];cur='';}
+      else if(c!='\r')cur+=c; }
+  }
+  if(cur!==''||row.length){row.push(cur);rows.push(row);}
+  return rows;
+}
+function idx(h,...names){for(const n of names){const i=h.findIndex(x=>sinAcento(x).includes(sinAcento(n)));if(i>=0)return i;}return -1;}
+function val(r,i){return i>=0?(r[i]||''):'';}
+
+function tarjeta(p){
+  const meta=[]; if(p.autor)meta.push('<i class="ti ti-user"></i> '+p.autor); if(p.fecha)meta.push('<i class="ti ti-clock"></i> '+p.fecha);
+  return `<div class="post">${p.titulo?`<div class="ptit">${p.titulo}</div>`:''}<div class="ptxt">${p.texto}</div>${meta.length?`<div class="pmeta">${meta.join('')}</div>`:''}</div>`;
+}
+function render(posts){
+  const c=document.getElementById('lista');
+  if(!posts.length){c.innerHTML='<div class="vacio">Todavía no hay publicaciones. ¡Sé la primera persona en compartir!</div>';return;}
+  c.innerHTML=posts.map(tarjeta).join('');
+}
+function desdeCSV(text){
+  const rows=parseCSV(text).filter(r=>r.length>1);
+  if(rows.length<2) return [];
+  const h=rows[0];
+  const iT=idx(h,'titulo','título','titular'), iX=idx(h,'reflex','mensaje','texto','detallada','comparti','descrip'),
+        iA=idx(h,'nombre','autor'), iF=idx(h,'marca','fecha');
+  const posts=rows.slice(1).map(r=>({titulo:val(r,iT),texto:val(r,iX),autor:val(r,iA),fecha:val(r,iF)})).filter(p=>p.texto);
+  posts.reverse(); // más recientes primero
+  return posts;
+}
+function compartir(){
+  if(UMEBLOG_FORM) window.open(UMEBLOG_FORM,'_blank');
+  else alert('Pegá el link de tu Google Form en UMEBLOG_FORM para activar la publicación.');
+}
+async function init(){
+  if(UMEBLOG_CSV){
+    try{ const r=await fetch(UMEBLOG_CSV,{cache:'no-store'}); render(desdeCSV(await r.text())); return; }catch(e){}
+  }
+  render(MUESTRA);
+}
+const MUESTRA=[
+  {titulo:'Gracias a la comunidad',texto:'Quería agradecer a todes los que ayudaron en la última jornada de cortafuegos. Se siente lindo construir entre todos.',autor:'Maru',fecha:''},
+  {titulo:'',texto:'Si alguien tiene semillas de tomate para compartir, paso a buscarlas. Gracias!',autor:'Tristán',fecha:''}
+];
+init();
+</script>
+</body>
+</html>
