@@ -1,0 +1,15 @@
+{
+"type": "FeatureCollection",
+"name": "Intersec_lineas_calles",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"xy_coordinate_resolution": 1e-15,
+"features": [
+{ "type": "Feature", "properties": { "FID": 2, "Manguera": "1", "NivelRed": 1, "TipoRed": "Distribucion", "AcopioMadr": "Bavali", "FID_2": 13, "Tipo": "Entrada", "Barrio": "Castaños", "Nombre": "Cosecha", "LongTramo": null }, "geometry": { "type": "Point", "coordinates": [ -64.7531058518084, -32.1914505396783 ] } },
+{ "type": "Feature", "properties": { "FID": 3, "Manguera": "1", "NivelRed": 2, "TipoRed": "Distribucion", "AcopioMadr": "Bavali", "FID_2": 7, "Tipo": "Entrada", "Barrio": "Castaños", "Nombre": "Cauce", "LongTramo": null }, "geometry": { "type": "Point", "coordinates": [ -64.754229213737347, -32.194649600075174 ] } },
+{ "type": "Feature", "properties": { "FID": 13, "Manguera": "1", "NivelRed": 1, "TipoRed": "Distribucion", "AcopioMadr": "Bavalia", "FID_2": 11, "Tipo": "Calle", "Barrio": "Nogales Alto", "Nombre": "Calle Raiz", "LongTramo": null }, "geometry": { "type": "Point", "coordinates": [ -64.75325498506183, -32.194043632042607 ] } },
+{ "type": "Feature", "properties": { "FID": 13, "Manguera": "1", "NivelRed": 1, "TipoRed": "Distribucion", "AcopioMadr": "Bavalia", "FID_2": 62, "Tipo": "Acceso", "Barrio": "Nogales Alto", "Nombre": "Acceso Acopio Bavali", "LongTramo": null }, "geometry": { "type": "Point", "coordinates": [ -64.753557416063728, -32.194581466829071 ] } },
+{ "type": "Feature", "properties": { "FID": 2, "Manguera": "1", "NivelRed": 1, "TipoRed": "Distribucion", "AcopioMadr": "Bavali", "FID_2": null, "Tipo": null, "Barrio": null, "Nombre": null, "LongTramo": null }, "geometry": { "type": "Point", "coordinates": [ -64.752813746038228, -32.191762098388295 ] } },
+{ "type": "Feature", "properties": { "FID": 7, "Manguera": "1", "NivelRed": 1, "TipoRed": "Distribucion", "AcopioMadr": "Bavali", "FID_2": null, "Tipo": null, "Barrio": null, "Nombre": null, "LongTramo": null }, "geometry": { "type": "Point", "coordinates": [ -64.754037061872012, -32.194766017874862 ] } },
+{ "type": "Feature", "properties": { "FID": 12, "Manguera": "1/2", "NivelRed": 2, "TipoRed": "Distribucion", "AcopioMadr": "Bavali", "FID_2": null, "Tipo": null, "Barrio": null, "Nombre": null, "LongTramo": null }, "geometry": { "type": "Point", "coordinates": [ -64.753537305160251, -32.198956189187946 ] } }
+]
+}
