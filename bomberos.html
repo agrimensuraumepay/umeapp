@@ -10,7 +10,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:column;max-width:480px;margin:0 auto;background:#dfe6dc}
+body{font-family:system-ui,sans-serif;color:#1a1a1a;display:flex;flex-direction:column;max-width:none;margin:0 auto;background:#dfe6dc}
 .topbar{background:#9a2f2f;padding:14px 16px;display:flex;align-items:center;gap:10px;z-index:10}
 .topbar h1{color:#fff;font-size:17px;font-weight:500;flex:1}
 .btn-back{color:#f0c9c9;font-size:22px;background:none;border:none;text-decoration:none;cursor:pointer}
@@ -75,9 +75,7 @@ const CAPAS=[
   {archivo:'data/ejes_calles_int.geojson',        nombre:'Calles internas',  clase:'calle',    visible:true},
   {archivo:'data/red_vial_provincial.geojson',    nombre:'Ruta provincial',  clase:'vialProv', visible:true},
   {archivo:'data/puntos.geojson',                 nombre:'Puntos de agua',   clase:'aguaPunto',visible:true},
-  {archivo:'data/Vial_puntos.geojson',            nombre:'Tranqueras',       clase:'tranquera',visible:true},
-  {archivo:'data/lineas.geojson',                 nombre:'Mangueras',        clase:'aguaLinea',visible:false},
-  {archivo:'data/Intersec_lineas_calles.geojson', nombre:'Cruces agua/calle',clase:'cruce',    visible:false}
+  {archivo:'data/Vial_puntos.geojson',            nombre:'Tranqueras',       clase:'tranquera',visible:true}
 ];
 
 const map=L.map('map').setView(CENTRO,16);
@@ -194,6 +192,8 @@ async function init(){
   if(bounds&&bounds.isValid())map.fitBounds(bounds.pad(0.05),{maxZoom:16});
 }
 init();
+window.addEventListener('load',()=>setTimeout(()=>map.invalidateSize(),200));
+const _tels=document.querySelector('.tels'); if(_tels)_tels.addEventListener('toggle',()=>setTimeout(()=>map.invalidateSize(),250));
 </script>
 </body>
 </html>
